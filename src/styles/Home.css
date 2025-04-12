@@ -1,0 +1,57 @@
+/* Home.css */
+.home-container {
+    padding: 4rem 2rem;
+    background: linear-gradient(to right, #fff5f0, #fefdfb);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+  }
+  
+  .hero-section {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto 4rem;
+  }
+  
+  .hero-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    background: linear-gradient(to right, #d44b23, #f49e64);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 2rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  
+  .feature-card {
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid #eee;
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.05);
+    text-align: center;
+    backdrop-filter: blur(6px);
+    transition: all 0.3s ease;
+  }
+  
+  .feature-card:hover {
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.1);
+    transform: translateY(-4px);
+  }
+  
+  .feature-card .icon {
+    margin-bottom: 1rem;
+    color: #d44b23;
+  }
+  
+  .feature-card p {
+    font-weight: 600;
+    font-size: 1rem;
+    color: #333;
+  }
+  
