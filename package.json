@@ -9,6 +9,7 @@
     "@testing-library/user-event": "^13.5.0",
     "chart.js": "^4.4.8",
     "file-saver": "^2.0.5",
+    "firebase": "^11.6.0",
     "framer-motion": "^7.10.3",
     "jspdf": "^3.0.1",
     "jspdf-autotable": "^5.0.2",
