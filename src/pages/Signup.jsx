@@ -1,51 +1,48 @@
 // src/pages/Signup.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
+import { Button } from '../components/ui/Button';
+import { motion } from 'framer-motion';
 
 const Signup = () => {
-  const { signup } = useAuth();
-  const navigate = useNavigate();
-
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const navigate = useNavigate();
 
-  const handleSignup = async (e) => {
+  const handleSignup = (e) => {
     e.preventDefault();
-    setError('');
-    try {
-      await signup(email, password);
-      navigate('/cashflow');
-    } catch (err) {
-      setError(err.message);
-    }
+
+    // 🔐 Replace this with Firebase Auth createUserWithEmailAndPassword
+    console.log('Account created for:', email);
+    alert('Signup successful! You can now log in.');
+    navigate('/login');
   };
 
   return (
-    <div className="auth-form-container">
-      <h2>Create Your FinStack Account</h2>
-      {error && <p className="error-msg">{error}</p>}
+    <motion.div
+      className="auth-container"
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      <h2>Create Your Account</h2>
       <form onSubmit={handleSignup}>
         <Input
           type="email"
           placeholder="Email address"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          required
         />
         <Input
           type="password"
           placeholder="Create password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          required
         />
         <Button type="submit">Sign Up</Button>
       </form>
-    </div>
+    </motion.div>
   );
 };
 

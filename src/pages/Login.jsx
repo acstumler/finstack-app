@@ -1,60 +1,50 @@
 // src/pages/Login.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../firebase';
-import '../styles/Login.css';
-
-const MASTER_EMAIL = 'master@finstack.app';
-const MASTER_PASSWORD = 'masterkey';
+import { Input } from '../components/ui/Input';
+import { Button } from '../components/ui/Button';
+import { motion } from 'framer-motion';
 
 const Login = () => {
-  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
+  const handleLogin = (e) => {
     e.preventDefault();
-    setError(null);
 
-    if (email === MASTER_EMAIL && password === MASTER_PASSWORD) {
-      localStorage.setItem('masterKey', 'true');
-      navigate('/cashflow');
-      return;
-    }
-
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
-      navigate('/cashflow');
-    } catch (err) {
-      setError('Invalid credentials or user not found.');
+    // 🔐 Replace this with your Firebase Auth logic
+    if (email === 'master@finstack.com' && password === 'masterkey') {
+      navigate('/dashboard');
+    } else {
+      alert('Invalid credentials. Try again or use the master key.');
     }
   };
 
   return (
-    <div className="login-container">
-      <form onSubmit={handleLogin} className="login-form">
-        <h2>Login to FinStack</h2>
-        <input
+    <motion.div
+      className="auth-container"
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      <h2>Login</h2>
+      <form onSubmit={handleLogin}>
+        <Input
           type="email"
-          placeholder="Email"
+          placeholder="Email address"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          required
         />
-        <input
+        <Input
           type="password"
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          required
         />
-        {error && <p className="error">{error}</p>}
-        <button type="submit">Login</button>
-        <p className="note">Use master@finstack.app / masterkey for full access</p>
+        <Button type="submit">Sign In</Button>
       </form>
-    </div>
+    </motion.div>
   );
 };
 

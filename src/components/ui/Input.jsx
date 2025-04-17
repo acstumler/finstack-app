@@ -1,11 +1,12 @@
 // src/components/ui/Input.jsx
 import React from 'react';
 
-const Input = ({ type = 'text', placeholder, ...props }) => {
+const Input = ({ type = 'text', placeholder, style = {}, ...props }) => {
   return (
     <input
       type={type}
       placeholder={placeholder}
+      className="custom-input"
       style={{
         width: '100%',
         padding: '0.6rem 1rem',
@@ -13,11 +14,11 @@ const Input = ({ type = 'text', placeholder, ...props }) => {
         border: '1px solid #ccc',
         borderRadius: '8px',
         marginBottom: '1rem',
-        ...props.style,
+        ...style,
       }}
       {...props}
     />
   );
 };
 
-export default Input;
+export { Input };
