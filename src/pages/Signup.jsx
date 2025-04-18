@@ -1,48 +1,39 @@
 // src/pages/Signup.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Input } from '../components/ui/Input';
-import { Button } from '../components/ui/Button';
-import { motion } from 'framer-motion';
+import { useAuth } from '../context/AuthContext';
+import Input from '../components/ui/Input';
+import Button from '../components/ui/Button';
 
 const Signup = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const { signup } = useAuth();
   const navigate = useNavigate();
 
-  const handleSignup = (e) => {
-    e.preventDefault();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
-    // 🔐 Replace this with Firebase Auth createUserWithEmailAndPassword
-    console.log('Account created for:', email);
-    alert('Signup successful! You can now log in.');
-    navigate('/login');
+  const handleSignup = async (e) => {
+    e.preventDefault();
+    setError('');
+    try {
+      await signup(email, password);
+      navigate('/dashboard');
+    } catch (err) {
+      setError('Signup failed. Please try again.');
+    }
   };
 
   return (
-    <motion.div
-      className="auth-container"
-      initial={{ opacity: 0, y: 30 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-    >
-      <h2>Create Your Account</h2>
-      <form onSubmit={handleSignup}>
-        <Input
-          type="email"
-          placeholder="Email address"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <Input
-          type="password"
-          placeholder="Create password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <Button type="submit">Sign Up</Button>
+    <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-white to-teal-50 p-4">
+      <form onSubmit={handleSignup} className="w-full max-w-md bg-white shadow-md rounded-lg p-8 space-y-4">
+        <h2 className="text-2xl font-semibold text-teal-700">Create an Account</h2>
+        {error && <div className="text-red-500 text-sm">{error}</div>}
+        <Input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
+        <Input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+        <Button type="submit" className="w-full">Sign Up</Button>
       </form>
-    </motion.div>
+    </div>
   );
 };
 
