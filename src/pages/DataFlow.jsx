@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
-import { PlaidLink } from 'react-plaid-link';  // Import PlaidLink
+import { PlaidLink } from 'react-plaid-link'; // Import PlaidLink component
 
 const DataFlow = () => {
   const [publicToken, setPublicToken] = useState(null);
-  const [status, setStatus] = useState('');  // Track success or failure status
+  const [status, setStatus] = useState('');  // Track success or failure
 
-  // This function is called when Plaid Link is successful
+  // This function is called when the Plaid Link completes successfully
   const onSuccess = (public_token) => {
-    setPublicToken(public_token);
+    setPublicToken(public_token); // Store the public token from Plaid
     setStatus('Linking Successful!');
 
-    // Send public token to the backend serverless function to get access token and transactions
+    // Send public token to the backend to exchange it for an access token and fetch transactions
     fetch('/api/plaid', {
       method: 'POST',
       body: JSON.stringify({ public_token }),
@@ -18,8 +18,8 @@ const DataFlow = () => {
     })
       .then(response => response.json())
       .then(data => {
-        console.log('Plaid Data received:', data);
-        // Use the received data to display transactions or link to dashboards
+        console.log('Data received from Plaid:', data);
+        // Process and display the received data (transactions, etc.)
       })
       .catch((error) => {
         console.error('Error linking bank account:', error);
@@ -34,16 +34,16 @@ const DataFlow = () => {
 
       {/* Plaid Link Button */}
       <PlaidLink
-        clientName="FinStack"
+        clientName="FinStack"  // Your app's name
         env="sandbox"  // Use 'production' for live apps
-        product={['transactions']}
+        product={['transactions']}  // Enable the Transactions product
         publicKey="PLAID_PUBLIC_KEY"  // Replace with your actual Plaid public key
-        onSuccess={onSuccess}
+        onSuccess={onSuccess}  // Trigger onSuccess when Plaid Link completes
       >
         Link Your Bank Account
       </PlaidLink>
 
-      {/* Display status message */}
+      {/* Status Message */}
       {publicToken && <p>{status}</p>}
     </div>
   );
