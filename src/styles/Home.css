@@ -1,18 +1,32 @@
 /* Home.css */
 
-.container {
+.home-container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
   text-align: center;
 }
 
-h2 {
-  font-size: 3rem;
-  color: #2b2b2b;
+.main-section {
+  background: linear-gradient(90deg, rgba(39, 117, 242, 1) 0%, rgba(89, 212, 255, 1) 100%);
+  padding: 50px 0;
+  color: white;
+  margin-bottom: 40px;
 }
 
-button {
+.main-section h1 {
+  font-size: 3rem;
+}
+
+.main-section p.tagline {
+  font-size: 1.5rem;
+}
+
+.buttons {
+  margin-top: 20px;
+}
+
+.buttons .btn {
   padding: 15px 30px;
   background-color: #007bff;
   color: white;
@@ -20,29 +34,26 @@ button {
   border: none;
   cursor: pointer;
   border-radius: 5px;
+  margin: 5px;
 }
 
-button:hover {
+.buttons .btn:hover {
   background-color: #0056b3;
 }
 
-.main-section {
-  background: linear-gradient(90deg, rgba(39, 117, 242, 1) 0%, rgba(89, 212, 255, 1) 100%);
-  padding: 50px 0;
-  color: white;
+.main-features {
+  margin-top: 50px;
+  text-align: left;
 }
 
-.main-section h1 {
-  font-size: 3rem;
-}
-
-.main-section p {
-  font-size: 1.2rem;
+.main-features h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
 }
 
 .feature-list {
-  text-align: left;
-  margin: 20px 0;
+  list-style-type: disc;
+  padding-left: 20px;
 }
 
 .feature-list li {
