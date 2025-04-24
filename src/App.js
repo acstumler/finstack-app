@@ -1,88 +1,77 @@
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
-import './App.css'; // Importing the existing styles
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import './App.css'; // Import your styling
 
-// Import Funding Finder components
-import SearchTool from './components/FundingFinder/SearchTool';
-import EligibilityChecker from './components/FundingFinder/EligibilityChecker';
-import ResultsDisplay from './components/FundingFinder/ResultsDisplay';
-
-// Import mock funding data
-import fundingOptions from './data/fundingOptions';
+// Importing pages/components
+import Budget from './pages/Budget';
+import CashFlow from './pages/CashFlow';
+import CashFlowHub from './pages/CashFlowHub';
+import Community from './pages/Community';
+import Compliance from './pages/Compliance';
+import Contact from './pages/Contact';
+import Features from './pages/Features';
+import Funding from './pages/Funding';
+import Advisors from './pages/Advisors';
+import FundingFinder from './pages/FundingFinder';
+import Home from './pages/Home'; // Importing the Home component
+import Learn from './pages/Learn';
+import Login from './pages/Login';
+import NotFound from './pages/NotFound';
+import Pricing from './pages/Pricing';
+import Signup from './pages/Signup';
 
 const App = () => {
-  const [searchResults, setSearchResults] = useState([]);
-  const [eligibilityResult, setEligibilityResult] = useState("");
-
-  // Handle Search functionality
-  const handleSearch = (searchQuery) => {
-    const filteredFunding = fundingOptions.filter(funding => {
-      return (
-        (searchQuery.fundingType ? funding.type.includes(searchQuery.fundingType) : true) &&
-        (searchQuery.industry ? funding.industry.includes(searchQuery.industry) : true) &&
-        (searchQuery.amount ? funding.amount >= searchQuery.amount : true) &&
-        (searchQuery.location ? funding.location.includes(searchQuery.location) : true) &&
-        (searchQuery.deadline ? new Date(funding.deadline) <= new Date(searchQuery.deadline) : true)
-      );
-    });
-    setSearchResults(filteredFunding);
-  };
-
-  // Handle Eligibility Check functionality
-  const handleEligibilityCheck = (financialDetails) => {
-    if (financialDetails.revenue < 1000000 && financialDetails.employees < 50) {
-      setEligibilityResult("Eligible for Small Business Loan");
-    } else {
-      setEligibilityResult("Not eligible for Small Business Loan");
-    }
-  };
-
   return (
     <Router>
       <div className="app-container">
+        {/* Navigation Bar */}
         <header className="navbar">
           <h1>FinStack App</h1>
           <nav>
             <ul className="nav-links">
               <li><Link to="/" className="nav-link">Home</Link></li>
-              <li><Link to="/funding-finder" className="nav-link">Funding Finder</Link></li>
-              {/* Add other links for your other features here */}
+              <li><Link to="/budget" className="nav-link">Budget Manager</Link></li>
+              <li><Link to="/cash-flow" className="nav-link">Cash Flow</Link></li>
+              <li><Link to="/cash-flow-hub" className="nav-link">Cash Flow Hub</Link></li>
+              <li><Link to="/community" className="nav-link">Community</Link></li>
+              <li><Link to="/compliance" className="nav-link">Compliance</Link></li>
+              <li><Link to="/contact" className="nav-link">Contact</Link></li>
+              <li><Link to="/features" className="nav-link">Features</Link></li>
+              <li><Link to="/funding" className="nav-link">Funding Finder</Link></li>
+              <li><Link to="/advisors" className="nav-link">Advisors</Link></li>
+              <li><Link to="/learn" className="nav-link">Learning Center</Link></li>
+              <li><Link to="/pricing" className="nav-link">Pricing</Link></li>
+              <li><Link to="/signup" className="nav-link">Sign Up</Link></li>
+              <li><Link to="/login" className="nav-link">Login</Link></li>
             </ul>
           </nav>
         </header>
 
+        {/* Main Content */}
         <main className="main-content">
-          <Switch>
-            <Route exact path="/" render={() => (
-              <div className="card">
-                <h2>Welcome to your Financial Dashboard</h2>
-                <p>Explore the Funding Finder or other features of the app.</p>
-                {/* Other features of your app can go here */}
-              </div>
-            )} />
-
-            {/* Funding Finder Page */}
-            <Route path="/funding-finder" render={() => (
-              <div className="card funding-finder">
-                <h2>Find Funding Opportunities</h2>
-                <div className="funding-finder-form">
-                  {/* Search Tool for Funding */}
-                  <SearchTool onSearch={handleSearch} />
-
-                  {/* Eligibility Checker */}
-                  <EligibilityChecker onCheckEligibility={handleEligibilityCheck} />
-
-                  {/* Eligibility Result */}
-                  {eligibilityResult && <div className="eligibility-result">{eligibilityResult}</div>}
-
-                  {/* Results Display */}
-                  <ResultsDisplay results={searchResults} />
-                </div>
-              </div>
-            )} />
-          </Switch>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/budget" element={<Budget />} />
+            <Route path="/cash-flow" element={<CashFlow />} />
+            <Route path="/cash-flow-hub" element={<CashFlowHub />} />
+            <Route path="/community" element={<Community />} />
+            <Route path="/compliance" element={<Compliance />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/features" element={<Features />} />
+            <Route path="/funding" element={<Funding />} />
+            <Route path="/advisors" element={<Advisors />} />
+            <Route path="/funding-finder" element={<FundingFinder />} />
+            <Route path="/learn" element={<Learn />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/not-found" element={<NotFound />} />
+            <Route path="/pricing" element={<Pricing />} />
+            <Route path="/signup" element={<Signup />} />
+            {/* Catch all route for non-existent pages */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
         </main>
 
+        {/* Footer */}
         <footer>
           <p>&copy; 2025 FinStack. All Rights Reserved.</p>
         </footer>

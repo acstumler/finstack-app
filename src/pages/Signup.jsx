@@ -1,8 +1,7 @@
-// src/pages/Signup.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import Input from '../components/ui/Input';
+import { Input } from '../components/ui/Input'; // Corrected import to use named import
 import Button from '../components/ui/Button';
 
 const Signup = () => {

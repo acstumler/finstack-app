@@ -1,7 +1,6 @@
-// src/pages/Login.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Input from '../components/ui/Input';
+import { Input } from '../components/ui/Input'; // Corrected import to use named import
 import Button from '../components/ui/Button';
 import { motion } from 'framer-motion';
 
