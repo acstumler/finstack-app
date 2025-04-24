@@ -1,60 +1,43 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import './App.css'; // Import your styling
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
-// Importing pages/components
+// Import your pages
+import Home from './pages/Home';
 import CashFlowHub from './pages/CashFlowHub';
+import BalanceSheetManager from './pages/BalanceSheetManager';
+import DataFlow from './pages/DataFlow';
 import FundingFinder from './pages/FundingFinder';
-import Advisors from './pages/Advisors';
-import Learn from './pages/Learn';
+import AdvisorsCompliance from './pages/AdvisorsCompliance';
+import LearningCenter from './pages/LearningCenter';
 import Pricing from './pages/Pricing';
-import Signup from './pages/Signup';
-import Contact from './pages/Contact';
-import Home from './pages/Home'; // Importing the Home component
+import SignUp from './pages/Signup';
+import Login from './pages/Login';
+import ContactUs from './pages/Contact';
+import NotFound from './pages/NotFound';  // A 404 page for unmatched routes
 
 const App = () => {
   return (
     <Router>
-      <div className="app-container">
-        {/* Navigation Bar */}
-        <header className="navbar">
-          <h1>FinStack</h1> {/* Removed "App" from the title */}
-          <nav>
-            <ul className="nav-links">
-              <li><Link to="/" className="nav-link">Home</Link></li>
-              <li><Link to="/cash-flow-hub" className="nav-link">Cash Flow Hub</Link></li>
-              <li><Link to="/balance-sheet" className="nav-link">Balance Sheet Manager</Link></li>
-              <li><Link to="/data-flow" className="nav-link">Data Flow</Link></li>
-              <li><Link to="/funding-finder" className="nav-link">Funding Finder</Link></li>
-              <li><Link to="/advisors" className="nav-link">Advisors/Compliance</Link></li>
-              <li><Link to="/learn" className="nav-link">Learning Center</Link></li>
-              <li><Link to="/pricing" className="nav-link">Pricing</Link></li>
-              <li><Link to="/signup" className="nav-link">Sign Up</Link></li>
-              <li><Link to="/login" className="nav-link">Login</Link></li>
-              <li><Link to="/contact" className="nav-link">Contact Us</Link></li>
-            </ul>
-          </nav>
-        </header>
+      <div className="App">
+        <Switch>
+          {/* Home Route */}
+          <Route path="/" exact component={Home} />
+          
+          {/* Specific Pages */}
+          <Route path="/cash-flow-hub" component={CashFlowHub} />
+          <Route path="/balance-sheet-manager" component={BalanceSheetManager} />
+          <Route path="/data-flow" component={DataFlow} />
+          <Route path="/funding-finder" component={FundingFinder} />
+          <Route path="/advisors-compliance" component={AdvisorsCompliance} />
+          <Route path="/learning-center" component={LearningCenter} />
+          <Route path="/pricing" component={Pricing} />
+          <Route path="/signup" component={SignUp} />
+          <Route path="/login" component={Login} />
+          <Route path="/contact-us" component={ContactUs} />
 
-        {/* Main Content */}
-        <main className="main-content">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/cash-flow-hub" element={<CashFlowHub />} />
-            <Route path="/funding-finder" element={<FundingFinder />} />
-            <Route path="/advisors" element={<Advisors />} />
-            <Route path="/learn" element={<Learn />} />
-            <Route path="/pricing" element={<Pricing />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/contact" element={<Contact />} />
-            {/* Add other routes here */}
-          </Routes>
-        </main>
-
-        {/* Footer */}
-        <footer>
-          <p>&copy; 2025 FinStack. All Rights Reserved.</p>
-        </footer>
+          {/* 404 Not Found */}
+          <Route component={NotFound} />
+        </Switch>
       </div>
     </Router>
   );
