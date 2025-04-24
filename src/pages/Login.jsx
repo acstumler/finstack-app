@@ -1,8 +1,8 @@
 // src/pages/Login.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Input } from '../components/ui/Input';
-import { Button } from '../components/ui/Button';
+import Input from '../components/ui/Input';
+import Button from '../components/ui/Button';
 import { motion } from 'framer-motion';
 
 const Login = () => {
@@ -13,7 +13,7 @@ const Login = () => {
   const handleLogin = (e) => {
     e.preventDefault();
 
-    // 🔐 Replace this with your Firebase Auth logic
+    // 🔐 Replace this with Firebase Auth logic
     if (email === 'master@finstack.com' && password === 'masterkey') {
       navigate('/dashboard');
     } else {
@@ -28,8 +28,8 @@ const Login = () => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <h2>Login</h2>
-      <form onSubmit={handleLogin}>
+      <h2 className="text-2xl font-semibold mb-4">Login</h2>
+      <form onSubmit={handleLogin} className="space-y-4">
         <Input
           type="email"
           placeholder="Email address"
@@ -42,7 +42,7 @@ const Login = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <Button type="submit">Sign In</Button>
+        <Button type="submit" className="w-full">Sign In</Button>
       </form>
     </motion.div>
   );

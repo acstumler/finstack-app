@@ -1,11 +1,22 @@
-// src/components/ui/Button.jsx
 import React from 'react';
 
-const Button = ({ children, className = '', ...props }) => {
+const Button = ({ children, onClick, type = 'button', style = {}, ...props }) => {
   return (
     <button
+      type={type}
+      onClick={onClick}
+      style={{
+        backgroundColor: '#D34D1F',
+        color: '#fff',
+        padding: '0.6rem 1.2rem',
+        fontSize: '1rem',
+        border: 'none',
+        borderRadius: '8px',
+        cursor: 'pointer',
+        transition: 'background-color 0.2s ease-in-out',
+        ...style,
+      }}
       {...props}
-      className={`bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded transition duration-200 ${className}`}
     >
       {children}
     </button>
