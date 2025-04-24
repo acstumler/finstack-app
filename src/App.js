@@ -26,7 +26,7 @@ const App = () => {
       <div className="app-container">
         {/* Navigation Bar */}
         <header className="navbar">
-          <h1>FinStack App</h1>
+          <h1>FinStack</h1> {/* Removed "App" from the title */}
           <nav>
             <ul className="nav-links">
               <li><Link to="/" className="nav-link">Home</Link></li>

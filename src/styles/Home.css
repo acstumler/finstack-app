@@ -1,6 +1,6 @@
 /* Home.css - Hero Section */
 .hero-section {
-  background: linear-gradient(45deg, #ff6b6b, #ffcc5c);
+  background: linear-gradient(135deg, rgba(0, 198, 255, 0.8), rgba(0, 114, 255, 0.8)); /* Oceanic gradient with transparency */
   color: white;
   text-align: center;
   padding: 50px 20px;
