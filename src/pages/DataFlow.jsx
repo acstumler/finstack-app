@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
-import { PlaidLink } from 'react-plaid-link'; // Import PlaidLink component
+import { PlaidLink } from 'react-plaid-link';
 
 const DataFlow = () => {
   const [publicToken, setPublicToken] = useState(null);
-  const [status, setStatus] = useState('');  // Track success or failure
+  const [status, setStatus] = useState('');  // Track success or failure of Plaid Link
+  const [loading, setLoading] = useState(false);  // Track loading state
 
-  // This function is called when the Plaid Link completes successfully
+  // This function is called when Plaid Link completes successfully
   const onSuccess = (public_token) => {
     setPublicToken(public_token); // Store the public token from Plaid
     setStatus('Linking Successful!');
+    setLoading(true);
 
     // Send public token to the backend to exchange it for an access token and fetch transactions
     fetch('/api/plaid', {
@@ -18,12 +20,15 @@ const DataFlow = () => {
     })
       .then(response => response.json())
       .then(data => {
-        console.log('Data received from Plaid:', data);
+        console.log('Plaid Data received:', data);
         // Process and display the received data (transactions, etc.)
+        setLoading(false);
+        setStatus('Linking and data fetch successful!');
       })
       .catch((error) => {
         console.error('Error linking bank account:', error);
         setStatus('Error linking account.');
+        setLoading(false);
       });
   };
 
@@ -34,10 +39,10 @@ const DataFlow = () => {
 
       {/* Plaid Link Button */}
       <PlaidLink
-        clientName="FinStack"  // Your app's name
-        env="sandbox"  // Use 'production' for live apps
+        clientName="FinStack"
+        env={process.env.REACT_APP_PLAID_ENV}  // Access Plaid environment from .env
         product={['transactions']}  // Enable the Transactions product
-        publicKey="PLAID_PUBLIC_KEY"  // Replace with your actual Plaid public key
+        publicKey={process.env.REACT_APP_PLAID_PUBLIC_KEY}  // Use Plaid public key from environment variable
         onSuccess={onSuccess}  // Trigger onSuccess when Plaid Link completes
       >
         Link Your Bank Account
@@ -45,6 +50,12 @@ const DataFlow = () => {
 
       {/* Status Message */}
       {publicToken && <p>{status}</p>}
+      
+      {/* Loading Indicator */}
+      {loading && <p>Loading... Please wait while we fetch your financial data.</p>}
+
+      {/* Optionally, display any additional status or errors */}
+      {!publicToken && !loading && <p>Click the button to link your bank account.</p>}
     </div>
   );
 };
