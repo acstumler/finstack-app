@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { PlaidLink } from 'react-plaid-link';
+import { PlaidLink } from 'react-plaid-link'; // Import PlaidLink component
 
 const DataFlow = () => {
   const [publicToken, setPublicToken] = useState(null);
   const [status, setStatus] = useState('');  // Track success or failure of Plaid Link
   const [loading, setLoading] = useState(false);  // Track loading state
 
-  // This function is called when Plaid Link completes successfully
+  // This function is called when the Plaid Link completes successfully
   const onSuccess = (public_token) => {
     setPublicToken(public_token); // Store the public token from Plaid
     setStatus('Linking Successful!');
@@ -40,9 +40,9 @@ const DataFlow = () => {
       {/* Plaid Link Button */}
       <PlaidLink
         clientName="FinStack"
-        env={process.env.REACT_APP_PLAID_ENV}  // Access Plaid environment from .env
+        env="sandbox"  // Change to 'production' for live apps
         product={['transactions']}  // Enable the Transactions product
-        publicKey={process.env.REACT_APP_PLAID_PUBLIC_KEY}  // Use Plaid public key from environment variable
+        publicKey={process.env.REACT_APP_PLAID_PUBLIC_KEY}  // Use your actual Plaid public key from environment variable
         onSuccess={onSuccess}  // Trigger onSuccess when Plaid Link completes
       >
         Link Your Bank Account

@@ -1,16 +1,15 @@
-// /api/plaid.js
 const plaid = require('plaid');
 
 // Initialize Plaid client with credentials from environment variables
 const client = new plaid.Client({
-  clientID: process.env.PLAID_CLIENT_ID,  // Use credentials stored in .env file
+  clientID: process.env.PLAID_CLIENT_ID,
   secret: process.env.PLAID_SECRET,
-  env: plaid.environments.sandbox,  // Use 'production' for live environments
+  env: plaid.environments.sandbox,  // Use 'production' in live apps
 });
 
 module.exports = async (req, res) => {
   if (req.method === 'POST') {
-    const { public_token } = req.body;  // Get the public token from the frontend
+    const { public_token } = req.body;  // Get the public token from frontend
 
     try {
       // Exchange the public token for an access token
@@ -24,7 +23,7 @@ module.exports = async (req, res) => {
         offset: 0,
       });
 
-      // Send the access token and transactions back to the frontend
+      // Send the access token and transactions back to frontend
       res.status(200).json({ accessToken, itemId, transactions: transactions.transactions });
     } catch (error) {
       console.error('Error connecting to Plaid:', error);
