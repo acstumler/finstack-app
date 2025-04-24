@@ -1,49 +1,61 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Input } from '../components/ui/Input'; // Corrected import to use named import
-import Button from '../components/ui/Button';
-import { motion } from 'framer-motion';
 
-const Login = () => {
+const Login = ({ setIsLoggedIn }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
+    
+    // Here you should add your authentication logic
+    // For now, let's assume any credentials are valid for testing
 
-    // 🔐 Replace this with Firebase Auth logic
-    if (email === 'master@finstack.com' && password === 'masterkey') {
-      navigate('/dashboard');
+    if (email && password) {
+      setIsLoggedIn(true); // Set user as logged in
+      navigate('/'); // Redirect to the Home page or dashboard
     } else {
-      alert('Invalid credentials. Try again or use the master key.');
+      alert('Please enter valid credentials');
     }
   };
 
   return (
-    <motion.div
-      className="auth-container"
-      initial={{ opacity: 0, y: 30 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-    >
-      <h2 className="text-2xl font-semibold mb-4">Login</h2>
-      <form onSubmit={handleLogin} className="space-y-4">
-        <Input
-          type="email"
-          placeholder="Email address"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <Input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <Button type="submit" className="w-full">Sign In</Button>
+    <div className="container">
+      <h2 className="text-3xl font-semibold">Login</h2>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <label htmlFor="email" className="block text-lg">Email</label>
+          <input
+            id="email"
+            type="email"
+            className="w-full px-4 py-2 border border-gray-300 rounded"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </div>
+
+        <div>
+          <label htmlFor="password" className="block text-lg">Password</label>
+          <input
+            id="password"
+            type="password"
+            className="w-full px-4 py-2 border border-gray-300 rounded"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </div>
+
+        <button
+          type="submit"
+          className="mt-4 px-6 py-2 bg-blue-500 text-white rounded"
+        >
+          Log In
+        </button>
       </form>
-    </motion.div>
+    </div>
   );
 };
 
