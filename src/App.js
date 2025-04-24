@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';  // Use Routes instead of Switch
 
 // Import your pages
 import Home from './pages/Home';
@@ -19,26 +19,26 @@ const App = () => {
   return (
     <Router>
       <div className="App">
-        {/* Define Routes here */}
-        <Switch>
+        {/* Use Routes instead of Switch */}
+        <Routes>
           {/* Home Route */}
-          <Route path="/" exact component={Home} />
+          <Route path="/" element={<Home />} />
           
           {/* Specific Pages */}
-          <Route path="/cash-flow-hub" component={CashFlowHub} />
-          <Route path="/balance-sheet-manager" component={BalanceSheetManager} />
-          <Route path="/data-flow" component={DataFlow} />
-          <Route path="/funding-finder" component={FundingFinder} />
-          <Route path="/advisors-compliance" component={AdvisorsCompliance} />
-          <Route path="/learning-center" component={LearningCenter} />
-          <Route path="/pricing" component={Pricing} />
-          <Route path="/signup" component={SignUp} />
-          <Route path="/login" component={Login} />
-          <Route path="/contact-us" component={ContactUs} />
+          <Route path="/cash-flow-hub" element={<CashFlowHub />} />
+          <Route path="/balance-sheet-manager" element={<BalanceSheetManager />} />
+          <Route path="/data-flow" element={<DataFlow />} />
+          <Route path="/funding-finder" element={<FundingFinder />} />
+          <Route path="/advisors-compliance" element={<AdvisorsCompliance />} />
+          <Route path="/learning-center" element={<LearningCenter />} />
+          <Route path="/pricing" element={<Pricing />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/contact-us" element={<ContactUs />} />
 
-          {/* 404 Not Found */}
-          <Route component={NotFound} />
-        </Switch>
+          {/* 404 Not Found Route */}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
       </div>
     </Router>
   );
