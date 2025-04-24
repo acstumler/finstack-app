@@ -28,3 +28,18 @@
 .hero-section .btn-primary:hover {
   background-color: #1d4ed8;
 }
+
+.features-description {
+  margin-top: 40px;
+  text-align: center;
+}
+
+.features-description ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.features-description li {
+  font-size: 1.2rem;
+  margin: 10px 0;
+}

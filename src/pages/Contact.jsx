@@ -1,19 +1,24 @@
-// src/pages/Contact.jsx
 import React from 'react';
 
 const Contact = () => {
   return (
-    <section className="page-section">
-      <h2>📬 Contact Us</h2>
-      <p>
-        Got a question, feature idea, or need support? We'd love to hear from you.
-      </p>
-      <ul>
-        <li>📧 Email: support@finstack.app</li>
-        <li>📍 HQ: Remote-first, USA-based</li>
-        <li>📣 Follow us on Twitter, LinkedIn & YouTube</li>
-      </ul>
-    </section>
+    <div className="container">
+      <h2 className="text-3xl font-semibold">Contact Us</h2>
+      <p>If you have any questions or need support, please reach out to us!</p>
+      
+      <form className="contact-form">
+        <label>Your Name:</label>
+        <input type="text" placeholder="Enter your name" />
+        
+        <label>Your Email:</label>
+        <input type="email" placeholder="Enter your email" />
+        
+        <label>Message:</label>
+        <textarea placeholder="Enter your message"></textarea>
+        
+        <button className="btn-primary">Submit</button>
+      </form>
+    </div>
   );
 };
 
