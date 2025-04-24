@@ -19,6 +19,7 @@ const App = () => {
   return (
     <Router>
       <div className="App">
+        {/* Define Routes here */}
         <Switch>
           {/* Home Route */}
           <Route path="/" exact component={Home} />
