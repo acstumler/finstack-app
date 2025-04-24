@@ -1,16 +1,54 @@
 import React, { useState } from 'react';
+import { useDropzone } from 'react-dropzone';
+import { Line, Pie, Bar } from 'react-chartjs-2';
+import { Chart as ChartJS } from 'chart.js/auto';
 
 const CashFlowHub = () => {
   const [income, setIncome] = useState('');
   const [expenses, setExpenses] = useState('');
-  const [forecastMonths, setForecastMonths] = useState(3); // Default to 3-month forecast
+  const [transactions, setTransactions] = useState([]);
+  const [forecastMonths, setForecastMonths] = useState(3);
+  const [uploadedData, setUploadedData] = useState(null);
 
-  // Function to handle creating a Cash Flow Statement
-  const handleCreateStatement = () => {
-    console.log("Creating Cash Flow Statement with Income: ", income, " Expenses: ", expenses);
+  // Handle file upload using react-dropzone
+  const onDrop = (acceptedFiles) => {
+    const file = acceptedFiles[0];
+    if (file && file.type === 'text/csv') {
+      // Process CSV file
+      parseCSV(file);
+    } else {
+      alert('Please upload a CSV file');
+    }
   };
 
-  // Function to forecast cash flow for a given number of months
+  const { getRootProps, getInputProps } = useDropzone({ onDrop });
+
+  const parseCSV = (file) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const fileContent = reader.result;
+      const lines = fileContent.split('\n');
+      const parsedData = lines.map((line) => {
+        const [date, type, amount] = line.split(',');
+        return { date, type, amount: parseFloat(amount) };
+      });
+      setUploadedData(parsedData);
+      calculateCashFlow(parsedData);
+    };
+    reader.readAsText(file);
+  };
+
+  const calculateCashFlow = (data) => {
+    const incomeData = data.filter((item) => item.type === 'income');
+    const expensesData = data.filter((item) => item.type === 'expense');
+
+    const totalIncome = incomeData.reduce((acc, curr) => acc + curr.amount, 0);
+    const totalExpenses = expensesData.reduce((acc, curr) => acc + curr.amount, 0);
+
+    setIncome(totalIncome);
+    setExpenses(totalExpenses);
+  };
+
   const handleForecastCashFlow = () => {
     const monthlyIncome = income / 12;
     const monthlyExpenses = expenses / 12;
@@ -19,10 +57,65 @@ const CashFlowHub = () => {
     console.log(`Expected cash outflow: $${monthlyExpenses * forecastMonths}`);
   };
 
+  // Chart data
+  const lineChartData = {
+    labels: uploadedData ? uploadedData.map((item) => item.date) : [],
+    datasets: [
+      {
+        label: 'Income',
+        data: uploadedData ? uploadedData.filter(item => item.type === 'income').map(item => item.amount) : [],
+        borderColor: '#4caf50',
+        fill: false,
+      },
+      {
+        label: 'Expenses',
+        data: uploadedData ? uploadedData.filter(item => item.type === 'expense').map(item => item.amount) : [],
+        borderColor: '#f44336',
+        fill: false,
+      },
+    ],
+  };
+
+  const pieChartData = {
+    labels: ['Income', 'Expenses'],
+    datasets: [
+      {
+        data: [income, expenses],
+        backgroundColor: ['#4caf50', '#f44336'],
+        hoverOffset: 4,
+      },
+    ],
+  };
+
+  const barChartData = {
+    labels: ['Forecast'],
+    datasets: [
+      {
+        label: 'Income Forecast',
+        data: [income * forecastMonths],
+        backgroundColor: '#4caf50',
+      },
+      {
+        label: 'Expenses Forecast',
+        data: [expenses * forecastMonths],
+        backgroundColor: '#f44336',
+      },
+    ],
+  };
+
   return (
     <div className="container">
       <h2 className="text-3xl font-semibold">Cash Flow Hub</h2>
       <p>Manage your business' cash flow, financial statements, and more.</p>
+
+      {/* File Upload Section */}
+      <section className="file-upload">
+        <h3 className="text-2xl font-medium">Upload Bank Statement (CSV)</h3>
+        <div {...getRootProps()} className="dropzone">
+          <input {...getInputProps()} />
+          <p>Drag & drop a CSV file here, or click to select one</p>
+        </div>
+      </section>
 
       {/* Cash Flow Statement */}
       <section className="financial-statements">
@@ -48,7 +141,7 @@ const CashFlowHub = () => {
             className="input-field"
           />
         </div>
-        <button className="btn-primary" onClick={handleCreateStatement}>Create Statement</button>
+        <button className="btn-primary" onClick={handleForecastCashFlow}>Create Statement</button>
       </section>
 
       {/* Cash Flow Forecasting */}
@@ -68,20 +161,17 @@ const CashFlowHub = () => {
         <button className="btn-primary" onClick={handleForecastCashFlow}>Forecast Cash Flow</button>
       </section>
 
-      {/* Cash Flow Ratios (Operating Cash Flow Ratio, Free Cash Flow, etc.) */}
-      <section className="cash-flow-ratios">
-        <h3 className="text-2xl font-medium">Cash Flow Ratios</h3>
-        <p>Calculate key ratios to assess your financial health.</p>
-        {/* Placeholder for ratio calculation components */}
-        <div className="form-group">
-          <label>Operating Cash Flow Ratio</label>
-          {/* Example placeholder calculation */}
-          <input type="text" value="Calculated Value" readOnly className="input-field" />
+      {/* Visualizing Data */}
+      <section className="charts">
+        <h3 className="text-2xl font-medium">Cash Flow Visualization</h3>
+        <div className="chart-container">
+          <Line data={lineChartData} />
         </div>
-        <div className="form-group">
-          <label>Free Cash Flow</label>
-          {/* Example placeholder calculation */}
-          <input type="text" value="Calculated Value" readOnly className="input-field" />
+        <div className="chart-container">
+          <Pie data={pieChartData} />
+        </div>
+        <div className="chart-container">
+          <Bar data={barChartData} />
         </div>
       </section>
     </div>
