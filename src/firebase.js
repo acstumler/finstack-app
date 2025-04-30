@@ -1,18 +1,26 @@
-// src/firebase.js
-import { initializeApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
+// firebase.js (updated for Firebase v9+)
 
+import { initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
+
+// Your Firebase configuration object
 const firebaseConfig = {
-  apiKey: "AIzaSyCeRwR8N0JVA5BDPr1_3MVmRX8S1Ed-UdM",
-  authDomain: "finstack-app.firebaseapp.com",
-  projectId: "finstack-app",
-  storageBucket: "finstack-app.appspot.com",
-  messagingSenderId: "254799215682",
-  appId: "1:254799215682:web:717dfd5f40fe07a24481db"
+  apiKey: "your-api-key",
+  authDomain: "your-auth-domain",
+  projectId: "your-project-id",
+  storageBucket: "your-storage-bucket",
+  messagingSenderId: "your-sender-id",
+  appId: "your-app-id"
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
 
-export { auth };
+// Get Firebase services
+const auth = getAuth(app);
+const db = getFirestore(app);
+const storage = getStorage(app);
+
+export { auth, db, storage };
