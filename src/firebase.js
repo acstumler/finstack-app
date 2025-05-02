@@ -1,26 +1,23 @@
-// firebase.js (updated for Firebase v9+)
+// Import necessary Firebase modules
+import { initializeApp } from 'firebase/app';
+import { getAuth } from 'firebase/auth';   // For Firebase Authentication
+import { getFirestore } from 'firebase/firestore';   // For Firestore database
 
-import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
-import { getStorage } from "firebase/storage";
-
-// Your Firebase configuration object
+// Firebase configuration from the Firebase console
 const firebaseConfig = {
-  apiKey: "your-api-key",
-  authDomain: "your-auth-domain",
-  projectId: "your-project-id",
-  storageBucket: "your-storage-bucket",
-  messagingSenderId: "your-sender-id",
-  appId: "your-app-id"
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,
 };
 
-// Initialize Firebase
+// Initialize Firebase with the provided config
 const app = initializeApp(firebaseConfig);
 
-// Get Firebase services
-const auth = getAuth(app);
-const db = getFirestore(app);
-const storage = getStorage(app);
+// Initialize and export Firebase Authentication (auth) and Firestore (db) instances
+const auth = getAuth(app);  // Firebase Authentication instance
+const db = getFirestore(app);  // Firestore instance
 
-export { auth, db, storage };
+export { auth, db };  // Export auth and db to be used in other components

@@ -1,69 +1,51 @@
 import React, { useState } from 'react';
-import { auth } from '../firebase'; // Import Firebase auth
+import { auth } from '../firebase';  // Import auth from firebase.js
+import { signInWithEmailAndPassword } from 'firebase/auth';  // Firebase Authentication method
 
-// Get the master key from environment variable
-const masterKey = process.env.REACT_APP_MASTER_KEY;
+function Login() {
+  const [email, setEmail] = useState('');    // State to hold the user's email
+  const [password, setPassword] = useState('');  // State to hold the user's password
+  const [error, setError] = useState('');    // State to store error messages
 
-const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [enteredMasterKey, setEnteredMasterKey] = useState(''); // For capturing master key input
-  const [error, setError] = useState(''); // To handle errors
-
+  // Function to handle the login process
   const handleLogin = async (e) => {
-    e.preventDefault();
-
-    // If the entered master key matches the stored one, bypass Firebase login
-    if (enteredMasterKey === masterKey) {
-      console.log('Master key accepted. You are logged in!');
-      // Optionally, handle successful master key login (store in state, localStorage, etc.)
-      return;
-    }
-
-    // Firebase login method if the master key isn't entered
+    e.preventDefault();  // Prevent default form submission behavior
     try {
-      await auth.signInWithEmailAndPassword(email, password);
-      console.log('User logged in successfully');
-    } catch (error) {
-      setError(error.message); // Handle errors like wrong credentials
-      console.error(error.message);
+      // Try signing in the user with email and password
+      await signInWithEmailAndPassword(auth, email, password);
+      console.log('User logged in successfully');  // Log success message
+    } catch (err) {
+      setError(err.message);  // If there's an error, set the error state
     }
   };
 
   return (
     <div>
-      <h2>Login to Your Account</h2>
+      <h2>Login</h2>
       <form onSubmit={handleLogin}>
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Enter your email"
-          required
-        />
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="Enter your password"
-          required
-        />
-        
-        {/* Master Key Input */}
-        <input
-          type="text"
-          value={enteredMasterKey}
-          onChange={(e) => setEnteredMasterKey(e.target.value)}
-          placeholder="Enter master key (for bypass)"
-        />
-        
-        {error && <p style={{ color: 'red' }}>{error}</p>}
-        <button type="submit">Login</button>
+        <div>
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}  // Update email state on input change
+          />
+        </div>
+        <div>
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}  // Update password state on input change
+          />
+        </div>
+        <div>
+          <button type="submit">Login</button>  {/* Submit button */}
+        </div>
       </form>
-
-      <p>Don't have an account? <a href="/signup">Sign Up</a></p>
+      {error && <p>{error}</p>}  {/* Display error message if there's an error */}
     </div>
   );
-};
+}
 
 export default Login;
