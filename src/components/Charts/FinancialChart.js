@@ -1,42 +1,74 @@
-import React, { useEffect, useState } from "react";
-import { Line } from "react-chartjs-2";
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
+import React, { useState, useEffect } from 'react';
+import { Line } from 'react-chartjs-2';
+import { Chart as ChartJS, Title, Tooltip, Legend, CategoryScale, LinearScale, PointElement, LineElement } from 'chart.js';
+import 'chartjs-adapter-date-fns';
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
+// Register necessary chart.js components
+ChartJS.register(Title, Tooltip, Legend, CategoryScale, LinearScale, PointElement, LineElement);
 
 const FinancialChart = ({ data }) => {
-  const [chartData, setChartData] = useState({
-    labels: [], // Will hold the date or time period labels
-    datasets: [
-      {
-        label: 'Cash Flow',
-        data: [], // Will hold the data points (financial values)
-        borderColor: 'rgb(75, 192, 192)',
-        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-        tension: 0.1,
-      },
-    ],
-  });
-
+  const [chartData, setChartData] = useState({});
+  
   useEffect(() => {
-    if (data) {
-      // Here we populate chart data based on the data passed as a prop
+    if (data && data.length > 0) {
+      const chartLabels = data.map(item => item.date);
+      const chartValues = data.map(item => item.value);
+
+      // Prepare the chart data structure
       setChartData({
-        labels: data.map((item) => item.date), // Assuming data is an array of objects with 'date' and 'value'
+        labels: chartLabels,
         datasets: [
           {
-            ...chartData.datasets[0],
-            data: data.map((item) => item.value),
-          },
-        ],
+            label: 'Financial Data',
+            data: chartValues,
+            borderColor: '#4bc0c0', // Custom color
+            fill: false,
+            tension: 0.1,
+          }
+        ]
       });
     }
   }, [data]);
 
   return (
-    <div>
-      <h2>Financial Dashboard</h2>
-      <Line data={chartData} />
+    <div className="chart-container">
+      <h3>Financial Trend</h3>
+      <Line data={chartData} options={{
+        responsive: true,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Financial Data Over Time'
+          },
+          tooltip: {
+            mode: 'index',
+            intersect: false,
+          }
+        },
+        scales: {
+          x: {
+            type: 'time',
+            time: {
+              unit: 'month', // Adjust according to your data (day, week, month, etc.)
+              tooltipFormat: 'll'
+            },
+            title: {
+              display: true,
+              text: 'Date'
+            }
+          },
+          y: {
+            title: {
+              display: true,
+              text: 'Value'
+            },
+            ticks: {
+              beginAtZero: true,
+              stepSize: 1000, // Adjust step size depending on data scale
+            }
+          }
+        }
+      }} />
     </div>
   );
 };
