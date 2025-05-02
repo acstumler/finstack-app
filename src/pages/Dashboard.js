@@ -1,48 +1,57 @@
 import React, { useState, useEffect } from 'react';
-import FinancialChart from '../components/charts/FinancialChart'; // Import the FinancialChart component
-import DateRangeFilter from '../components/DateRangeFilter'; // Import the DateRangeFilter component
-import { db } from '../firebase'; // Import your firebase setup
+import { Link } from 'react-router-dom';
+import FinancialChart from '../components/charts/FinancialChart';
+import DateRangeFilter from '../components/DateRangeFilter';
+import { useAuth } from '../firebase'; // Assuming you're using Firebase Authentication
 
 const Dashboard = () => {
-  const [data, setData] = useState([]);
-  const [dateRange, setDateRange] = useState({ startDate: '', endDate: '' });
+  const [user, setUser] = useState(null);
+  const { currentUser, logout } = useAuth(); // Using Firebase's Auth context
+  const [dateRange, setDateRange] = useState({
+    startDate: new Date(),
+    endDate: new Date(),
+  });
 
-  // Fetch real data from Firestore or your API
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const snapshot = await db.collection('financialData').get(); // Get data from 'financialData' collection
-        const fetchedData = snapshot.docs.map(doc => doc.data()); // Map Firestore documents to data
-        // Filter data based on the selected date range
-        const filteredData = fetchedData.filter((entry) => {
-          const entryDate = new Date(entry.date);
-          const startDate = new Date(dateRange.startDate);
-          const endDate = new Date(dateRange.endDate);
+    setUser(currentUser); // Setting user data when the component mounts
+  }, [currentUser]);
 
-          if (!dateRange.startDate || !dateRange.endDate) return true;
-
-          return entryDate >= startDate && entryDate <= endDate;
-        });
-
-        setData(filteredData); // Set filtered data
-      } catch (error) {
-        console.error('Error fetching data from Firestore:', error);
-      }
-    };
-
-    fetchData();
-  }, [dateRange]); // Refetch data when dateRange changes
-
-  // Handle changes in the selected date range
-  const handleDateChange = (newRange) => {
-    setDateRange(newRange); // Update the date range state
+  const handleDateRangeChange = (start, end) => {
+    setDateRange({ startDate: start, endDate: end });
   };
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+    } catch (error) {
+      console.error("Error logging out: ", error);
+    }
+  };
+
+  if (!user) {
+    return (
+      <div>
+        <h2>You need to be logged in to view the dashboard</h2>
+        <Link to="/login">Go to Login</Link>
+      </div>
+    );
+  }
 
   return (
     <div>
-      <h1>Dashboard</h1>
-      <DateRangeFilter onDateChange={handleDateChange} />
-      <FinancialChart data={data} />
+      <h2>Welcome, {user.displayName || user.email}</h2>
+      <button onClick={handleLogout}>Logout</button>
+      
+      <div>
+        <h3>Financial Performance</h3>
+        <DateRangeFilter onChange={handleDateRangeChange} />
+        <FinancialChart dateRange={dateRange} />
+      </div>
+      
+      <div>
+        <h3>Your Financial Overview</h3>
+        {/* You can add more financial details here */}
+      </div>
     </div>
   );
 };
